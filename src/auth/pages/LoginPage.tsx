@@ -1,78 +1,66 @@
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginRequest } from '../../store/auth/authSlice';
-import { RootState } from '../../store/store';
-import {  useNavigate } from 'react-router';
+import { RootState } from '../../store';
+import { useNavigate } from 'react-router';
+import { loginRequest } from '../../store/actions/authActions';
 
 interface LoginFormValues {
   username: string;
   password: string;
 }
 
-const validationSchema = Yup.object({
-  username: Yup.string().min(2,'Invalid username address').required('Required'),
-  password: Yup.string().min(6, 'Password must be at least 6 characters').required('Required'),
-});
-
-export const LoginPage = () => {
+const LoginPage = () => {
   const dispatch = useDispatch();
-  //const navigate = useNavigate();
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const navigate = useNavigate();
+  const { loading, error } = useSelector((state: RootState) => state.auth);
 
-  const formik = useFormik<LoginFormValues>({
-    initialValues: {
-      username: 'mhernandez',
-      password: 'clave789',
-    },
-    validationSchema,
-    onSubmit: (values) => {
-      dispatch(loginRequest(values));
-      console.log(isAuthenticated);
-
-      
-      
-
-    },
-  });
+  const initialValues: LoginFormValues = { username: 'mhernandez', password: 'clave789' };
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <div>
-        <label htmlFor="username">username</label>
-        <input
-          id="username"
-          name="username"
-          type="username"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.username}
-        />
-        {formik.touched.username && formik.errors.username ? (
-          <div>{formik.errors.username}</div>
-        ) : null}
-      </div>
+    <div>
+      <h2>Login</h2>
+      <Formik
+        initialValues={initialValues}
+        validate={(values) => {
+          const errors: Partial<LoginFormValues> = {};
+          if (!values.username) {
+            errors.username = 'Required';
+          }
+          if (!values.password) {
+            errors.password = 'Required';
+          }
+          return errors;
+        }}
+        onSubmit={(values) => {
+          dispatch(loginRequest({ ...values, navigate }));
+        }}
+      >
+        {({ isSubmitting }) => (
+          <Form>
+            <div className='mb-3'>
+              <label htmlFor="username" className="form-label">Username</label>
+              <Field type="text" name="username" className="form-control"/>
 
-      <div>
-        <label htmlFor="password">Password</label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.password}
-        />
-        {formik.touched.password && formik.errors.password ? (
-          <div>{formik.errors.password}</div>
-        ) : null}
-      </div>
+              
+              <ErrorMessage name="username" component="div" />
+            </div>
 
-      <button type="submit">Login</button>
-    </form>
+            <div>
+              <label htmlFor="password">Password:</label>
+              <Field type="password" name="password" />
+              <ErrorMessage name="password" component="div" />
+            </div>
+
+            {error && <div style={{ color: 'red' }}>{error}</div>}
+
+            <button type="submit" disabled={isSubmitting || loading}>
+              {loading ? 'Loading...' : 'Login'}
+            </button>
+          </Form>
+        )}
+      </Formik>
+    </div>
   );
 };
 
-
-
-
+export default LoginPage;

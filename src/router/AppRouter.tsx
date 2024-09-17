@@ -1,15 +1,11 @@
 import { Navigate, Route, Routes } from "react-router"
 import { AuthRoutes } from "../auth/routes/AuthRoutes"
 import { ProductRoutes } from "../products/routes/ProductRoutes"
-import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
+
 
 
 
 export const AppRouter = () => {
-
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-
 
   let token = false;
 
