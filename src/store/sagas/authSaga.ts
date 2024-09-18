@@ -4,12 +4,14 @@ import axios from 'axios';
 import { LOGIN_REQUEST, loginSuccess, loginFailure, LoginRequestPayload,LOGOUT_REQUEST ,logoutSuccess} from '../actions/authActions';
 import { AxiosResponse } from 'axios';
 
+const baseUrl = import.meta.env.VITE_BASE_URL;
+
 interface LoginResponse {
   jwt: string;
 }
 
 function loginApi({ username, password }: { username: string; password: string }) {
-  return axios.post<LoginResponse>('http://localhost:8080/api/v1/auth/authenticate', { username, password });
+  return axios.post<LoginResponse>(`${baseUrl}/api/v1/auth/authenticate`, { username, password });
 }
 
 function* loginSaga(action: { type: string; payload: LoginRequestPayload }) {

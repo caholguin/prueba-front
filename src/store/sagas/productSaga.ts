@@ -14,7 +14,7 @@ import {
 } from '../actions/productActions';
 
 
-const baseUrl = import.meta.env.baseUrl;
+const baseUrl = import.meta.env.VITE_BASE_URL;
 
 console.log('URL',baseUrl);
 
@@ -34,14 +34,14 @@ const getAuthHeaders = () => {
 };
 
 const fetchProductsFromApi = async (): Promise<Content[]> => {
-  const response = await axios.get<Product>(`http://localhost:8080/api/v1/products`, getAuthHeaders());  
+  const response = await axios.get<Product>(`${baseUrl}/api/v1/products`, getAuthHeaders());  
 
   return response.data.content;
 };
 
 const createProductApi = async (product: Omit<SaveProduct, 'id'>): Promise<SaveProduct> => {
 
-  const response = await axios.post<SaveProduct>(`http://localhost:8080/api/v1/products`, product, getAuthHeaders());
+  const response = await axios.post<SaveProduct>(`${baseUrl}/api/v1/products`, product, getAuthHeaders());
   return response.data;
  
 };
