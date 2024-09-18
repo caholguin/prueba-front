@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import { LOGIN_REQUEST, loginSuccess, loginFailure, LoginRequestPayload } from '../actions/authActions';
+import { LOGIN_REQUEST, loginSuccess, loginFailure, LoginRequestPayload,LOGOUT_REQUEST ,logoutSuccess} from '../actions/authActions';
 import { AxiosResponse } from 'axios';
 
 interface LoginResponse {
@@ -19,12 +19,31 @@ function* loginSaga(action: { type: string; payload: LoginRequestPayload }) {
    
     localStorage.setItem('token', token);
     yield put(loginSuccess(token));
-    action.payload.navigate('/');
+
+    console.log('logueo');
+    action.payload.navigate('/products');
   } catch (error: any) {
     yield put(loginFailure(error.response ? error.response.data : 'Error de conexión'));
   }
 }
 
+function* logoutSaga() {
+  try {
+    localStorage.removeItem('token'); // Elimina el token
+    yield put(logoutSuccess()); // Despacha la acción de éxito del logout
+    window.location.href = '/auth/login'; // Redirige al login
+  } catch (error) {
+    console.error('Error during logout', error);
+  }
+}
+
+
+
+
 export default function* authSaga() {
   yield takeLatest(LOGIN_REQUEST, loginSaga);
+  yield takeLatest(LOGOUT_REQUEST, logoutSaga);
 }
+
+
+

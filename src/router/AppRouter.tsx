@@ -1,17 +1,14 @@
-import { Navigate, Route, Routes } from "react-router"
+import { Route, Routes } from "react-router"
 import { AuthRoutes } from "../auth/routes/AuthRoutes"
 import { ProductRoutes } from "../products/routes/ProductRoutes"
+import PrivateRoute from "../products/routes/PrivateRoutes"
 
 
 
 
 export const AppRouter = () => {
 
-  let token = false;
 
-  if (localStorage.getItem("token")) {
-    token = true;    
-  }
   
   return (
     <Routes>
@@ -19,9 +16,11 @@ export const AppRouter = () => {
         {/* Login */}
         <Route path="/auth/*" element={ < AuthRoutes /> }/>
       
-        {/* Products */}        
-        <Route path="/" element={token ? <ProductRoutes /> : <Navigate to="/auth" />} />
-        {/* <Route path="/*" element={ < ProductRoutes /> }/> */}
+        {/* Products */}    
+        {/* <Route path="/products*" element={ < ProductRoutes /> }/>  */}
+        <Route path="/products/*" element={<PrivateRoute />}>
+        <Route path="*" element={<ProductRoutes />} />
+      </Route>
 
     </Routes>
   )

@@ -16,6 +16,12 @@ const LoginPage = () => {
 
   const initialValues: LoginFormValues = { username: 'mhernandez', password: 'clave789' };
 
+
+  const handleSubmit = (values: LoginFormValues) => {
+    // Dispara la acción loginRequest con los datos y la función navigate
+    dispatch(loginRequest(values, navigate));
+  };
+
   return (
     <div>
       <h2>Login</h2>
@@ -31,9 +37,7 @@ const LoginPage = () => {
           }
           return errors;
         }}
-        onSubmit={(values) => {
-          dispatch(loginRequest({ ...values, navigate }));
-        }}
+        onSubmit={handleSubmit}
       >
         {({ isSubmitting }) => (
           <Form>
