@@ -19,8 +19,7 @@ function* loginSaga(action: { type: string; payload: LoginRequestPayload }) {
    
     localStorage.setItem('token', token);
     yield put(loginSuccess(token));
-
-    console.log('logueo');
+    
     action.payload.navigate('/products');
   } catch (error: any) {
     yield put(loginFailure(error.response ? error.response.data : 'Error de conexión'));
@@ -29,9 +28,9 @@ function* loginSaga(action: { type: string; payload: LoginRequestPayload }) {
 
 function* logoutSaga() {
   try {
-    localStorage.removeItem('token'); // Elimina el token
-    yield put(logoutSuccess()); // Despacha la acción de éxito del logout
-    window.location.href = '/auth/login'; // Redirige al login
+    localStorage.removeItem('token'); 
+    yield put(logoutSuccess()); 
+    window.location.href = '/auth/login'; 
   } catch (error) {
     console.error('Error during logout', error);
   }

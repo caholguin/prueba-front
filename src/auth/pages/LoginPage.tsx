@@ -17,8 +17,7 @@ const LoginPage = () => {
   const initialValues: LoginFormValues = { username: 'mhernandez', password: 'clave789' };
 
 
-  const handleSubmit = (values: LoginFormValues) => {
-    // Dispara la acción loginRequest con los datos y la función navigate
+  const handleSubmit = (values: LoginFormValues) => {    
     dispatch(loginRequest(values, navigate));
   };
 

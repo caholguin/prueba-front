@@ -1,5 +1,7 @@
 import { Navigate, Route, Routes } from "react-router"
-import { ProductsPage } from "../pages/ProductsPage"
+
+
+import ProductsPage from "../pages/ProductsPage"
 import { ProductCreatePage } from "../pages/ProductCreatePage"
 
 

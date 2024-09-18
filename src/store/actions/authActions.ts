@@ -7,7 +7,7 @@ export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export interface LoginRequestPayload {
   username: string;
   password: string;
-  navigate: (path: string) => void; // Añadimos navigate aquí
+  navigate: (path: string) => void; 
 }
 
 export const loginRequest = (payload: { username: string; password: string }, navigate: (path: string) => void) => ({
