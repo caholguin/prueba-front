@@ -29,10 +29,13 @@ export const ProductLayout = () => {
           <Link className="nav-link active" aria-current="page" to="/products/create">Crear</Link>
         </li>        
 
+
+      </ul>      
+        <div className="d-flex" role="search">
         <button className="btn btn-danger" onClick={handleSubmit}>
               Logout
             </button>
-      </ul>      
+        </div>
     </div>
   </div>
 </nav>

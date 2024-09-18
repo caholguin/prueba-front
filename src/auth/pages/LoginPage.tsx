@@ -14,56 +14,61 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const { loading, error } = useSelector((state: RootState) => state.auth);
 
-  const initialValues: LoginFormValues = { username: 'mhernandez', password: 'clave789' };
+  const initialValues: LoginFormValues = { username: 'admin', password: 'clave789' };
 
 
   const handleSubmit = (values: LoginFormValues) => {    
     dispatch(loginRequest(values, navigate));
   };
+  
 
   return (
-    <div>
-      <h2>Login</h2>
-      <Formik
-        initialValues={initialValues}
-        validate={(values) => {
-          const errors: Partial<LoginFormValues> = {};
-          if (!values.username) {
-            errors.username = 'Required';
-          }
-          if (!values.password) {
-            errors.password = 'Required';
-          }
-          return errors;
-        }}
-        onSubmit={handleSubmit}
-      >
-        {({ isSubmitting }) => (
-          <Form>
-            <div className='mb-3'>
-              <label htmlFor="username" className="form-label">Username</label>
-              <Field type="text" name="username" className="form-control"/>
+    <div className="d-flex justify-content-center align-items-center vh-100" style={{ backgroundColor: '#f8f9fa' }}>
+      <div className="border p-4 rounded shadow-sm" style={{ maxWidth: '400px', width: '100%' }}>
+        <div className="text-center mb-4">
+          <h1 className="h3 mb-3 fw-normal">Login</h1>
+        </div>
+        <Formik
+          initialValues={initialValues}
+          validate={(values) => {
+            const errors: Partial<LoginFormValues> = {};
+            if (!values.username) {
+              errors.username = 'El username es obligatorio';
+            }
+            if (!values.password) {
+              errors.password = 'La contraseña es obligatoria';
+            }
+            return errors;
+          }}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting }) => (
+            <Form>
+              <div className="mb-3">
+                <label htmlFor="username" className="form-label">Username</label>
+                <Field type="text" name="username" className="form-control" />
+                <ErrorMessage name="username" component="div" className="text-danger" />
+              </div>
 
-              
-              <ErrorMessage name="username" component="div" />
-            </div>
+              <div className="mb-3">
+                <label htmlFor="password" className="form-label">Password</label>
+                <Field type="password" name="password" className="form-control" />
+                <ErrorMessage name="password" component="div" className="text-danger" />
+              </div>
 
-            <div>
-              <label htmlFor="password">Password:</label>
-              <Field type="password" name="password" />
-              <ErrorMessage name="password" component="div" />
-            </div>
+              {error && <div className="text-danger mb-3">{error}</div>}
 
-            {error && <div style={{ color: 'red' }}>{error}</div>}
-
-            <button type="submit" disabled={isSubmitting || loading}>
-              {loading ? 'Loading...' : 'Login'}
-            </button>
-          </Form>
-        )}
-      </Formik>
+              <button type="submit" disabled={isSubmitting || loading} className="btn btn-primary w-100">
+                {loading ? 'Loading...' : 'Login'}
+              </button>
+            </Form>
+          )}
+        </Formik>
+      </div>
     </div>
   );
 };
 
 export default LoginPage;
+
+
