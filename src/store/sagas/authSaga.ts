@@ -32,7 +32,7 @@ function* logoutSaga() {
   try {
     localStorage.removeItem('token'); 
     yield put(logoutSuccess()); 
-    window.location.href = '/auth/login'; 
+    window.location.href = '/'; 
   } catch (error) {
     console.error('Error during logout', error);
   }
